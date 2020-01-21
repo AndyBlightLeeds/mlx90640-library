@@ -90,6 +90,7 @@
 #define IMAGE_SIZE 768*PIXEL_SIZE_BYTES
 
 void put_pixel_false_colour(char *image, int x, int y, double v) {
+#if 0
     // Heatmap code borrowed from: http://www.andrewnoske.com/wiki/Code_-_heatmaps_and_color_gradients
     const int NUM_COLORS = 7;
     static float color[NUM_COLORS][3] = { {0,0,0}, {0,0,1}, {0,1,0}, {1,1,0}, {1,0,0}, {1,0,1}, {1,1,1} };
@@ -125,6 +126,21 @@ void put_pixel_false_colour(char *image, int x, int y, double v) {
     image[offset + 2] = ib;
 
 
+#else
+    // Each pixel represents the temperature in the range 0 to 255 Celcius.
+    char temp;
+    int offset = (y*32+x) * PIXEL_SIZE_BYTES;
+    temp = v;
+    if(temp > 255){
+        temp = 255;
+    }
+    if(temp < 0){
+        temp = 0;
+    }
+    image[offset] = temp;
+    image[offset + 1] = temp;
+    image[offset + 2] = temp;
+#endif
 }
 
 int main(int argc, char *argv[]){
