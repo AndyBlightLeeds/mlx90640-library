@@ -1,11 +1,10 @@
 I2C_MODE = LINUX
-I2C_LIBS = 
-#I2C_LIBS = -lbcm2835
+I2C_LIBS =
 SRC_DIR = examples/src/
 BUILD_DIR = examples/
 LIB_DIR = $(SRC_DIR)lib/
 
-examples = test rawrgb step fbuf interp video hotspot sdlscale 
+examples = test rawrgb step fbuf interp video hotspot
 examples_objects = $(addsuffix .o,$(addprefix $(SRC_DIR), $(examples)))
 examples_output = $(addprefix $(BUILD_DIR), $(examples))
 
@@ -14,8 +13,8 @@ ifeq ($(PREFIX),)
 	PREFIX = /usr/local
 endif
 
-ifeq ($(I2C_MODE), LINUX)
-	I2C_LIBS =
+ifeq ($(I2C_MODE), RPI)
+	I2C_LIBS += -lbcm2835
 endif
 
 all: libMLX90640_API.a libMLX90640_API.so examples
@@ -63,7 +62,7 @@ $(BUILD_DIR)interp: $(SRC_DIR)interp.o $(LIB_DIR)interpolate.o $(LIB_DIR)fb.o li
 $(BUILD_DIR)video: $(SRC_DIR)video.o $(LIB_DIR)fb.o libMLX90640_API.a
 	$(CXX) -L/home/pi/mlx90640-library $^ -o $@ $(I2C_LIBS) -lavcodec -lavutil -lavformat
 
-bcm2835-1.55.tar.gz:	
+bcm2835-1.55.tar.gz:
 	wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.55.tar.gz
 
 bcm2835-1.55: bcm2835-1.55.tar.gz
