@@ -35,7 +35,7 @@ const char *i2c_device = "/dev/i2c-1";
 
 void MLX90640_I2CInit()
 {
-    
+
 }
 
 int MLX90640_I2CRead(uint8_t slaveAddr, uint16_t startAddress, uint16_t nMemAddressRead, uint16_t *data)
@@ -61,7 +61,7 @@ int MLX90640_I2CRead(uint8_t slaveAddr, uint16_t startAddress, uint16_t nMemAddr
     i2c_messages[1].len = nMemAddressRead * 2;
     i2c_messages[1].buf = (I2C_MSG_FMT*)buf;
 
-    //result = write(i2c_fd, cmd, 3);    
+    //result = write(i2c_fd, cmd, 3);
     //result = read(i2c_fd, buf, nMemAddressRead*2);
     i2c_messageset[0].msgs = i2c_messages;
     i2c_messageset[0].nmsgs = 2;
@@ -74,19 +74,19 @@ int MLX90640_I2CRead(uint8_t slaveAddr, uint16_t startAddress, uint16_t nMemAddr
     }
 
     for(int count = 0; count < nMemAddressRead; count++){
-	int i = count << 1;
-    	*p++ = ((uint16_t)buf[i] << 8) | buf[i+1];
+        int i = count << 1;
+        *p++ = ((uint16_t)buf[i] << 8) | buf[i+1];
     }
 
     return 0;
-} 
+}
 
 void MLX90640_I2CFreqSet(int freq)
 {
 }
 
 int MLX90640_I2CWrite(uint8_t slaveAddr, uint16_t writeAddress, uint16_t data)
-{ 
+{
     char cmd[4] = {(char)(writeAddress >> 8), (char)(writeAddress & 0x00FF), (char)(data >> 8), (char)(data & 0x00FF)};
     int result;
 
