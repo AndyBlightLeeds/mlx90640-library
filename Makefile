@@ -28,7 +28,7 @@ libMLX90640_API.a: functions/MLX90640_API.o functions/MLX90640_$(I2C_MODE)_I2C_D
 	ar rcs $@ $^
 	ranlib $@
 
-functions/MLX90640_API.o functions/MLX90640_RPI_I2C_Driver.o functions/MLX90640_LINUX_I2C_Driver.o : CXXFLAGS+=-fPIC -I headers -shared $(I2C_LIBS)
+functions/MLX90640_API.o functions/MLX90640_RPI_I2C_Driver.o functions/MLX90640_LINUX_I2C_Driver.o : CXXFLAGS+=-fPIC -I headers -Wall -shared $(I2C_LIBS)
 
 $(examples_objects) : CXXFLAGS+=-std=c++11
 

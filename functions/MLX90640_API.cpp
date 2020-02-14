@@ -69,12 +69,11 @@ void MLX90640_StartMeasurement(uint8_t slaveAddr, uint8_t subPage)
 
 int MLX90640_GetData(uint8_t slaveAddr, uint16_t *frameData)
 {
-    int error = 0;
-    uint16_t statusRegister;
-    uint16_t controlRegister1;
+    uint16_t statusRegister = 0;
+    uint16_t controlRegister1 = 0;
 
     // Get page data
-    error = MLX90640_I2CRead(slaveAddr, 0x0400, 832, frameData);
+    int error = MLX90640_I2CRead(slaveAddr, 0x0400, 832, frameData);
 
     // Get status reguster
     MLX90640_I2CRead(slaveAddr, 0x8000, 1, &statusRegister);
@@ -84,13 +83,13 @@ int MLX90640_GetData(uint8_t slaveAddr, uint16_t *frameData)
 
     frameData[832] = controlRegister1;
     frameData[833] = statusRegister & 0x0001; // Populate the subpage number
+    return error;
 }
 
 int MLX90640_InterpolateOutliers(uint16_t *frameData, uint16_t *eepromData)
 {
     for(int x = 0; x < 768; x++){
         int broken = eepromData[64 + x] == 0;
-        int outlier = eepromData[64 + x] & 0x0001;
         if (broken){
             float val = 0;
             int count = 0;
